@@ -32,7 +32,7 @@ module.exports = {
             });
         })
     },
-    findUser(whereInfo) {
+    findUser(whereInfo = {}) {
         return new Promise((resolve, reject) => {
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;

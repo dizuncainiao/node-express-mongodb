@@ -9,3 +9,6 @@ export const login = (params: object) => request.post('/login', Qs.stringify(par
 
 // 注册
 export const register = (params: object) => request.post('/register', Qs.stringify(params))
+
+// 获取人员列表
+export const userList = (params: object) => request.post('/userList', Qs.stringify(params))

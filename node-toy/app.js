@@ -42,5 +42,12 @@ app.post('/register', async (req, res) => {
     }
 })
 
+// 查询人员列表
+app.post('/userList', async (req, res) => {
+    const result = await findUser()
+    console.log(result);
+    res.send(setResponse(result, '', 200))
+})
+
 app.listen(8076)
 console.log('http://localhost:8076')

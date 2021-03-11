@@ -1,4 +1,4 @@
-### Send POST request with json body
+### 登录
 POST http://localhost:8076/login
 Content-Type: application/json
 
@@ -6,3 +6,9 @@ Content-Type: application/json
   "user": "hello",
   "password": "123456"
 }
+
+### 查询人员列表
+POST http://localhost:8076/userList
+Content-Type: application/json
+
+{}
