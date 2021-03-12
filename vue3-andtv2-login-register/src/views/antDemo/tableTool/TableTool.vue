@@ -16,6 +16,14 @@
     :scroll="{ y: 400 }"
     :loading="tableLoading"
   >
+    <template #title>
+      <a-input-search
+        v-model:value="searchText"
+        placeholder="input search text"
+        style="width: 200px"
+        @search="onSearch"
+      />
+    </template>
     <template #action="{ record }">
       <a-button
         type="danger"
@@ -44,6 +52,7 @@ export default defineComponent({
     // 动画循环播放
     const isLoop = ref(true)
     const tableLoading = ref(false)
+    const searchText = ref('')
     const dataSource: any = ref([])
     const columns = [
       {
@@ -59,6 +68,17 @@ export default defineComponent({
         slots: { customRender: 'action' }
       }
     ]
+
+    function onSearch () {
+      const params = {
+        userName: searchText.value
+      }
+      tableLoading.value = true
+      userList(params).then(res => {
+        dataSource.value = res.data
+        tableLoading.value = false
+      })
+    }
 
     function getUserList () {
       tableLoading.value = true
@@ -84,9 +104,11 @@ export default defineComponent({
       dataSource,
       columns,
       tableLoading,
+      searchText,
       getUserList,
       setLoop,
-      deleteRow
+      deleteRow,
+      onSearch
     }
   }
 })

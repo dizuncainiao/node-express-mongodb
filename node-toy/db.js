@@ -42,6 +42,9 @@ module.exports = {
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 const dbase = db.db("testNode");
+                if (Object.keys(whereInfo).length) {
+                    whereInfo = {userName: new RegExp(whereInfo.userName)}
+                }
                 dbase.collection("users").find(whereInfo).toArray(function (err, result) {
                     if (err) {
                         reject(err)

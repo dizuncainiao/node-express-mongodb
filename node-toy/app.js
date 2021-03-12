@@ -44,7 +44,7 @@ app.post('/register', async (req, res) => {
 
 // 查询人员列表
 app.post('/userList', async (req, res) => {
-    const result = await findUser()
+    const result = await findUser(req.body)
     console.log(result);
     res.send(setResponse(result, '', 200))
 })
