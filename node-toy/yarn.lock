@@ -492,6 +492,13 @@ has-yarn@^2.1.0:
   resolved "https://registry.npm.taobao.org/has-yarn/download/has-yarn-2.1.0.tgz#137e11354a7b5bf11aa5cb649cf0c6f3ff2b2e77"
   integrity sha1-E34RNUp7W/EapctknPDG8/8rLnc=
 
+hotnode@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npm.taobao.org/hotnode/download/hotnode-0.0.8.tgz#3adaa63d5b252c26f12945c827d6125c60c80733"
+  integrity sha1-OtqmPVslLCbxKUXIJ9YSXGDIBzM=
+  dependencies:
+    watch "0.5.0"
+
 http-cache-semantics@^4.0.0:
   version "4.1.0"
   resolved "https://registry.npm.taobao.org/http-cache-semantics/download/http-cache-semantics-4.1.0.tgz#49e91c5cbf36c9b94bcfcd71c23d5249ec74e390"
@@ -1219,10 +1226,20 @@ utils-merge@1.0.1:
   resolved "https://registry.npm.taobao.org/utils-merge/download/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.npm.taobao.org/uuid/download/uuid-8.3.2.tgz?cache=0&sync_timestamp=1607460077975&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fuuid%2Fdownload%2Fuuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha1-gNW1ztJxu5r2xEXyGhoExgbO++I=
+
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/vary/download/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+
+watch@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npm.taobao.org/watch/download/watch-0.5.0.tgz#1eb1399b3420960127431efa646b718da146d37f"
+  integrity sha1-HrE5mzQglgEnQx76ZGtxjaFG038=
 
 widest-line@^3.1.0:
   version "3.1.0"

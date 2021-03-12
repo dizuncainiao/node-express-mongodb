@@ -12,3 +12,6 @@ export const register = (params: object) => request.post('/register', Qs.stringi
 
 // 获取人员列表
 export const userList = (params: object) => request.post('/userList', Qs.stringify(params))
+
+// 删除一条
+export const deleteUser = (params: object) => request.post('/deleteUser', Qs.stringify(params))

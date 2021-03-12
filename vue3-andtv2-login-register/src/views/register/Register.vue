@@ -72,6 +72,12 @@ export default defineComponent({
     // 启用粒子特效
     useParticleEffect()
 
+    function resetFormData () {
+      formData.user = ''
+      formData.password = ''
+      formData.confirmPassword = ''
+    }
+
     function registerHandler () {
       const {
         user,
@@ -83,6 +89,7 @@ export default defineComponent({
       }
       register(params).then(res => {
         console.log(res)
+        // resetFormData()
       }).catch(err => {
         console.log(err)
       })

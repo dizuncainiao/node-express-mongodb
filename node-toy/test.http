@@ -12,3 +12,11 @@ POST http://localhost:8076/userList
 Content-Type: application/json
 
 {}
+
+### 删除人员
+POST http://localhost:8076/deleteUser
+Content-Type: application/json
+
+{
+
+}

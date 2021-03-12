@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const {setResponse} = require('./utils')
-const {createCollection, insertOneUser, findUser} = require('./db')
+const {createCollection, insertOneUser, findUser, deleteUser} = require('./db')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 // 创建集合
@@ -47,6 +47,13 @@ app.post('/userList', async (req, res) => {
     const result = await findUser()
     console.log(result);
     res.send(setResponse(result, '', 200))
+})
+
+// 删除人员
+app.post('/deleteUser', async (req, res) => {
+    const result = await deleteUser(req.body)
+    console.log(result);
+    res.send(setResponse(result, '删除成功！', 200))
 })
 
 app.listen(8076)

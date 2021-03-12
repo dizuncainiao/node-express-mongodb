@@ -15,13 +15,13 @@ const errorHandler = (error: any) => {
 const notifyHandler = (info: any) => {
   switch (info.code) {
     case 200:
-      notification.success({ message: info.msg })
+      info.msg && notification.success({ message: info.msg })
       break
     case 4000:
-      notification.warning({ message: info.msg })
+      info.msg && notification.warning({ message: info.msg })
       break
     default:
-      notification.info({ message: info.msg })
+      info.msg && notification.info({ message: info.msg })
       break
   }
 }

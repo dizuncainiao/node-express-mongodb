@@ -3,71 +3,68 @@
   <a-button
     :class="['animated', 'tada', (isLoop ? 'infinite' : '')]"
     @mouseenter="setLoop(false)"
-    @click="getWeiBoHot"
-  >点击查看今天的微博热搜</a-button>
+    @click="getUserList"
+  >点击查看人员
+  </a-button>
   <br>
   <br>
   <a-table
-    rowKey="hotwordnum"
+    rowKey="id"
     :dataSource="dataSource"
     :columns="columns"
     :pagination="false"
     :scroll="{ y: 400 }"
+    :loading="tableLoading"
   >
-    <template #hotword="{text, index}">
-      <span v-if="index < 3" :class="`color-${index + 1}`">{{ index + 1 }}</span>
-      <span v-else class="mr11">{{ index + 1 }}</span>
-      <span>{{ text }}</span>
-    </template>
-    <template #hotWordTitle>
-      <FileTextTwoTone/>
-      热搜词
-    </template>
-    <template #hotWordNum>
-      <FireFilled style="color: red;"/>
-      热度值
+    <template #action="{ record }">
+      <a-button
+        type="danger"
+        shape="circle"
+        @click="deleteRow(record.id)"
+      >
+        <template #icon>
+          <DeleteOutlined/>
+        </template>
+      </a-button>
     </template>
   </a-table>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { weiBoHot } from '@/api'
-import { ResDesc } from './interface'
-import { FireFilled, FileTextTwoTone } from '@ant-design/icons-vue'
+import { userList, deleteUser } from '@/api'
+import { DeleteOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: 'TableTool',
   components: {
-    FireFilled,
-    FileTextTwoTone
+    DeleteOutlined
   },
   setup () {
+    // 动画循环播放
     const isLoop = ref(true)
+    const tableLoading = ref(false)
     const dataSource: any = ref([])
     const columns = [
       {
-        dataIndex: 'hotword',
-        slots: {
-          title: 'hotWordTitle',
-          customRender: 'hotword'
-        }
+        dataIndex: 'userName',
+        title: '用户名'
       },
       {
-        dataIndex: 'hotwordnum',
-        slots: { title: 'hotWordNum' }
+        dataIndex: 'password',
+        title: '密码'
+      },
+      {
+        title: '操作',
+        slots: { customRender: 'action' }
       }
     ]
 
-    function getWeiBoHot () {
-      weiBoHot({ key: '6aad779655697c8e92d66812a8c10412' }).then(res => {
-        const {
-          code,
-          newslist
-        } = res as ResDesc
-        if (code === 200) {
-          dataSource.value = newslist
-        }
+    function getUserList () {
+      tableLoading.value = true
+      userList({}).then(res => {
+        dataSource.value = res.data
+        tableLoading.value = false
       })
     }
 
@@ -75,12 +72,21 @@ export default defineComponent({
       isLoop.value = val
     }
 
+    function deleteRow (id: string) {
+      deleteUser({ id }).then(res => {
+        console.log(res)
+        getUserList()
+      })
+    }
+
     return {
       isLoop,
       dataSource,
       columns,
-      getWeiBoHot,
-      setLoop
+      tableLoading,
+      getUserList,
+      setLoop,
+      deleteRow
     }
   }
 })

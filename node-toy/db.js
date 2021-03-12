@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/testNode';
+const { v4: uuidV4 } = require('uuid');
 
 module.exports = {
     createCollection() {
@@ -21,7 +22,11 @@ module.exports = {
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 const dbase = db.db("testNode");
-                dbase.collection("users").insertOne(userData, function (err, res) {
+                const record = {
+                    ...userData,
+                    id: uuidV4()
+                }
+                dbase.collection("users").insertOne(record, function (err, res) {
                     if (err) {
                         reject(err)
                         return
@@ -43,6 +48,23 @@ module.exports = {
                         return
                     }
                     resolve(result)
+                    db.close();
+                });
+            });
+        })
+    },
+    deleteUser(whereInfo) {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(url, function(err, db) {
+                if (err) throw err;
+                const dbase = db.db("testNode");
+                dbase.collection("users").deleteOne(whereInfo, function(err, obj) {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    console.log(obj, 'obj obj obj obj obj obj obj obj obj obj obj obj ');
+                    resolve()
                     db.close();
                 });
             });

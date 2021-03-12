@@ -49,7 +49,7 @@ import {
 } from 'vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
-import { Book } from './interface'
+import { Book, ResDesc } from './interface'
 import { useParticleEffect } from '@/utils'
 import { login } from '@/api'
 
@@ -83,7 +83,11 @@ export default defineComponent({
         password
       }
       loading.value = true
-      login(params).then(() => {
+      login(params).then((res: ResDesc) => {
+        if (res.code !== 200) {
+          loading.value = false
+          return
+        }
         sessionStorage.setItem('userName', user)
         loading.value = false
         router.replace({ name: 'Home' })
