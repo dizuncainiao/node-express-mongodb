@@ -12,7 +12,8 @@ POST http://localhost:8076/userList
 Content-Type: application/json
 
 {
-"userName": "wang"
+  "page": 1,
+  "pageSize": 5
 }
 
 ### 删除人员
@@ -21,4 +22,14 @@ Content-Type: application/json
 
 {
 
+}
+
+### 查询人员列表分页
+POST http://localhost:8076/userListPage
+Content-Type: application/json
+
+{
+  "userName": "",
+  "page": "1",
+  "pageSize": "10"
 }

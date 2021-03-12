@@ -3,7 +3,7 @@
   <a-button
     :class="['animated', 'tada', (isLoop ? 'infinite' : '')]"
     @mouseenter="setLoop(false)"
-    @click="getUserList"
+    @click="initTableData"
   >点击查看人员
   </a-button>
   <br>
@@ -12,9 +12,10 @@
     rowKey="id"
     :dataSource="dataSource"
     :columns="columns"
-    :pagination="false"
     :scroll="{ y: 400 }"
     :loading="tableLoading"
+    :pagination="pagination"
+    @change="tableChange"
   >
     <template #title>
       <a-input-search
@@ -39,8 +40,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { userList, deleteUser } from '@/api'
+import { defineComponent, reactive, ref } from 'vue'
+import { userListPage, deleteUser } from '@/api'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
@@ -54,6 +55,11 @@ export default defineComponent({
     const tableLoading = ref(false)
     const searchText = ref('')
     const dataSource: any = ref([])
+    const pagination = reactive({
+      current: 1,
+      pageSize: 5,
+      total: 0
+    })
     const columns = [
       {
         dataIndex: 'userName',
@@ -69,23 +75,31 @@ export default defineComponent({
       }
     ]
 
-    function onSearch () {
-      const params = {
-        userName: searchText.value
-      }
+    function getUserList (params = {}) {
       tableLoading.value = true
-      userList(params).then(res => {
-        dataSource.value = res.data
+      userListPage(params).then(res => {
+        dataSource.value = res.data.records
+        pagination.total = res.data.total
         tableLoading.value = false
       })
     }
 
-    function getUserList () {
-      tableLoading.value = true
-      userList({}).then(res => {
-        dataSource.value = res.data
-        tableLoading.value = false
-      })
+    function onSearch () {
+      const params = {
+        userName: searchText.value,
+        page: pagination.current,
+        pageSize: pagination.pageSize
+      }
+      getUserList(params)
+    }
+
+    function initTableData () {
+      const params = {
+        userName: '',
+        page: pagination.current,
+        pageSize: pagination.pageSize
+      }
+      getUserList(params)
     }
 
     function setLoop (val: boolean) {
@@ -95,8 +109,14 @@ export default defineComponent({
     function deleteRow (id: string) {
       deleteUser({ id }).then(res => {
         console.log(res)
-        getUserList()
+        initTableData()
       })
+    }
+
+    function tableChange (info: any) {
+      console.log(pagination)
+      pagination.current = info.current
+      onSearch()
     }
 
     return {
@@ -105,10 +125,12 @@ export default defineComponent({
       columns,
       tableLoading,
       searchText,
-      getUserList,
+      pagination,
       setLoop,
       deleteRow,
-      onSearch
+      onSearch,
+      tableChange,
+      initTableData
     }
   }
 })
