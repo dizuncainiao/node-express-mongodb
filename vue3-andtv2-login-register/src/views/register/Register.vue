@@ -48,6 +48,7 @@
 <script lang="ts">
 import { useParticleEffect } from '@/utils'
 import { defineComponent, reactive, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { UserOutlined, LockOutlined, CheckCircleOutlined } from '@ant-design/icons-vue'
 import { RegisterData } from './interface'
 import { register } from '@/api'
@@ -60,6 +61,7 @@ export default defineComponent({
     CheckCircleOutlined
   },
   setup () {
+    const router = useRouter()
     const loading = ref(false)
     const formData = reactive({
       user: '',
@@ -88,8 +90,7 @@ export default defineComponent({
         password
       }
       register(params).then(res => {
-        console.log(res)
-        // resetFormData()
+        router.push('/')
       }).catch(err => {
         console.log(err)
       })

@@ -88,6 +88,7 @@ export default defineComponent({
           return
         }
         sessionStorage.setItem('userName', user)
+        localStorage.setItem('token', res.data.token)
         loading.value = false
         router.replace({ name: 'Home' })
       }).catch(err => {
