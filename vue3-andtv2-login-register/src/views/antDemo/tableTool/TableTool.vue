@@ -27,8 +27,17 @@
     </template>
     <template #action="{ record }">
       <a-button
+        shape="circle"
+        @click="updateRow(record)"
+      >
+        <template #icon>
+          <FormOutlined/>
+        </template>
+      </a-button>
+      <a-button
         type="danger"
         shape="circle"
+        class="ml10"
         @click="deleteRow(record.id)"
       >
         <template #icon>
@@ -37,23 +46,37 @@
       </a-button>
     </template>
   </a-table>
+
+  <a-modal v-model:visible="visible" title="更新" @ok="handleOk">
+    <a-form layout="horizontal" v-bind="{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }">
+      <a-form-item label="用户名">
+        <a-input v-model:value="formData.userName" placeholder="请输入用户名"/>
+      </a-form-item>
+      <a-form-item label="密码">
+        <a-input v-model:value="formData.password" placeholder="请输入密码"/>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-import { userListPage, deleteUser } from '@/api'
-import { DeleteOutlined } from '@ant-design/icons-vue'
+import { ComponentInternalInstance, defineComponent, getCurrentInstance, createVNode, reactive, ref } from 'vue'
+import { userListPage, deleteUser, updateUser } from '@/api'
+import { DeleteOutlined, FormOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: 'TableTool',
   components: {
-    DeleteOutlined
+    DeleteOutlined,
+    FormOutlined
   },
   setup () {
+    const { globalProperties } = (getCurrentInstance() as ComponentInternalInstance).appContext.config
     // 动画循环播放
     const isLoop = ref(true)
     const tableLoading = ref(false)
     const searchText = ref('')
+    const visible = ref(false)
     const dataSource: any = ref([])
     const pagination = reactive({
       current: 1,
@@ -74,6 +97,11 @@ export default defineComponent({
         slots: { customRender: 'action' }
       }
     ]
+    const formData = reactive({
+      userName: '',
+      password: '',
+      id: ''
+    })
 
     function getUserList (params = {}) {
       tableLoading.value = true
@@ -107,9 +135,16 @@ export default defineComponent({
     }
 
     function deleteRow (id: string) {
-      deleteUser({ id }).then(res => {
-        console.log(res)
-        initTableData()
+      globalProperties.$confirm({
+        title: '提示',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '你确定要删除这条记录吗？',
+        onOk () {
+          deleteUser({ id }).then(res => {
+            console.log(res)
+            initTableData()
+          })
+        }
       })
     }
 
@@ -119,6 +154,23 @@ export default defineComponent({
       onSearch()
     }
 
+    function handleOk () {
+      console.log(formData)
+      const params = { ...formData }
+      updateUser(params).then(res => {
+        visible.value = false
+        initTableData()
+      })
+    }
+
+    function updateRow (row: any) {
+      formData.userName = row.userName
+      formData.password = row.password
+      formData.id = row.id
+      visible.value = true
+      console.log(6)
+    }
+
     return {
       isLoop,
       dataSource,
@@ -126,11 +178,15 @@ export default defineComponent({
       tableLoading,
       searchText,
       pagination,
+      visible,
+      formData,
       setLoop,
       deleteRow,
       onSearch,
       tableChange,
-      initTableData
+      initTableData,
+      handleOk,
+      updateRow
     }
   }
 })

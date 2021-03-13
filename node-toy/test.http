@@ -33,3 +33,13 @@ Content-Type: application/json
   "page": "1",
   "pageSize": "10"
 }
+
+### 更新人员
+POST http://localhost:8076/updateUser
+Content-Type: application/json
+
+{
+  "userName" : "wangbo",
+  "password" : "6688",
+  "id" : "250ca8ba-089f-4002-b813-4729227cd670"
+}

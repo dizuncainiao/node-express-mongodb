@@ -29,7 +29,7 @@ const findUser = function (whereInfo = {}) {
             const skipNum = (Number(page) - 1) * Number(pageSize)
             whereInfo = {userName: new RegExp(whereInfo.userName)}
 
-            dbase.collection("users").find(whereInfo).skip(skipNum).limit(Number(pageSize)).toArray(function (err, result) {
+            dbase.collection("users").find(whereInfo).sort({createTime: -1}).skip(skipNum).limit(Number(pageSize)).toArray(function (err, result) {
                 if (err) {
                     reject(err)
                     return
@@ -96,6 +96,24 @@ module.exports = {
                     }
                     console.log(obj, 'obj obj obj obj obj obj obj obj obj obj obj obj ');
                     resolve()
+                    db.close();
+                });
+            });
+        })
+    },
+    updateUser(info) {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(url, function(err, db) {
+                if (err) throw err;
+                const dbase = db.db("testNode");
+                const filter = {id: info.id}
+                const update = {$set: info}
+                dbase.collection("users").updateOne(filter, update, function(err, res) {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    resolve(res)
                     db.close();
                 });
             });

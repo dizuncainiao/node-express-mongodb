@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const {setResponse} = require('./utils')
-const {createCollection, insertOneUser, findUser, deleteUser, queryUserListPage} = require('./db')
+const {createCollection, insertOneUser, findUser, deleteUser, queryUserListPage, updateUser} = require('./db')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 // 创建集合
@@ -37,6 +37,7 @@ app.post('/register', async (req, res) => {
     if (result.length) {
         res.send(setResponse(req.body, '用户名重复！', 4000))
     } else {
+        req.body = {...req.body, createTime: new Date().getTime()}
         await insertOneUser(req.body)
         res.send(setResponse(req.body, '注册成功！'))
     }
@@ -62,6 +63,13 @@ app.post('/userListPage', async (req, res) => {
     const result = await queryUserListPage(req.body)
     console.log(result);
     res.send(setResponse(result, '', 200))
+})
+
+// 更新人员
+app.post('/updateUser', async (req, res) => {
+    const result = await updateUser(req.body)
+    console.log(result);
+    res.send(setResponse(null, '更新成功！', 200))
 })
 
 app.listen(8076)

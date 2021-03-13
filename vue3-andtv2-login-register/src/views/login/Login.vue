@@ -61,7 +61,6 @@ export default defineComponent({
   },
   setup () {
     const router = useRouter()
-    const { globalProperties } = (getCurrentInstance() as ComponentInternalInstance).appContext.config
     console.log(getCurrentInstance(), 'getCurrentInstance')
 
     const formData = reactive({

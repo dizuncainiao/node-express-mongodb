@@ -15,3 +15,6 @@ export const userListPage = (params: object) => request.post('/userListPage', Qs
 
 // 删除一条
 export const deleteUser = (params: object) => request.post('/deleteUser', Qs.stringify(params))
+
+// 更新数据
+export const updateUser = (params: object) => request.post('/updateUser', Qs.stringify(params))
