@@ -89,8 +89,10 @@ export default defineComponent({
         userName: user,
         password
       }
-      register(params).then(res => {
-        router.push('/')
+      register(params).then((res: any) => {
+        if (res.code === 200) {
+          router.push('/')
+        }
       }).catch(err => {
         console.log(err)
       })

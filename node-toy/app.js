@@ -71,7 +71,7 @@ app.post('/register', async (req, res) => {
     console.log(req.body);
     const {userName} = req.body
     // 查询用户名是否重复
-    const result = await findUser({userName})
+    const result = await findUser({userName}, false)
     if (result.length) {
         return res.json(setResponse(req.body, '用户名重复！', 4000))
     } else {

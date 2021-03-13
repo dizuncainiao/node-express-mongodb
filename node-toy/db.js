@@ -20,14 +20,18 @@ const getQueryTotal = function (whereInfo = {}) {
         });
     })
 }
-const findUser = function (whereInfo = {}) {
+const findUser = function (whereInfo = {}, isFuzzy = true) {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             const dbase = db.db("testNode");
             const {page, pageSize} = whereInfo
             const skipNum = (Number(page) - 1) * Number(pageSize)
-            whereInfo = {userName: new RegExp(whereInfo.userName)}
+            if (isFuzzy) {
+                whereInfo = {userName: new RegExp(whereInfo.userName)}
+            } else {
+                whereInfo = {userName: whereInfo.userName}
+            }
 
             dbase.collection("users").find(whereInfo).sort({createTime: -1}).skip(skipNum).limit(Number(pageSize)).toArray(function (err, result) {
                 if (err) {
@@ -103,12 +107,12 @@ module.exports = {
     },
     updateUser(info) {
         return new Promise((resolve, reject) => {
-            MongoClient.connect(url, function(err, db) {
+            MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 const dbase = db.db("testNode");
                 const filter = {id: info.id}
                 const update = {$set: info}
-                dbase.collection("users").updateOne(filter, update, function(err, res) {
+                dbase.collection("users").updateOne(filter, update, function (err, res) {
                     if (err) {
                         reject(err)
                         return

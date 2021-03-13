@@ -4,7 +4,7 @@
     :class="['animated', 'tada', (isLoop ? 'infinite' : '')]"
     @mouseenter="setLoop(false)"
     @click="initTableData"
-  >点击查看人员
+  >点击查看全部人员
   </a-button>
   <br>
   <br>
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { ComponentInternalInstance, defineComponent, getCurrentInstance, createVNode, reactive, ref } from 'vue'
+import { ComponentInternalInstance, defineComponent, getCurrentInstance, createVNode, reactive, ref, onMounted } from 'vue'
 import { userListPage, deleteUser, updateUser } from '@/api'
 import { DeleteOutlined, FormOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
 
@@ -122,6 +122,7 @@ export default defineComponent({
     }
 
     function initTableData () {
+      searchText.value = ''
       const params = {
         userName: '',
         page: pagination.current,
@@ -129,6 +130,10 @@ export default defineComponent({
       }
       getUserList(params)
     }
+
+    onMounted(() => {
+      initTableData()
+    })
 
     function setLoop (val: boolean) {
       isLoop.value = val
