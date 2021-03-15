@@ -162,7 +162,7 @@ export default defineComponent({
     function handleOk () {
       console.log(formData)
       const params = { ...formData }
-      updateUser(params).then(res => {
+      updateUser(params).then(() => {
         visible.value = false
         initTableData()
       })
