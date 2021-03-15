@@ -10,7 +10,10 @@ const request = axios.create({
 
 // 异常拦截处理器
 const errorHandler = (error: any) => {
-  console.log(error.response)
+  console.log(JSON.stringify(error), 'line 13')
+  if (error.message === 'Network Error') {
+    return notification.error({ message: 'Network Error' })
+  }
   switch (error.response.status) {
     case 401:
       notification.error({ message: error.response.data.msg })

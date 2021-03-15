@@ -92,7 +92,8 @@ export default defineComponent({
         loading.value = false
         router.replace({ name: 'Home' })
       }).catch(err => {
-        console.log(err)
+        loading.value = false
+        console.log(err, 'line 95')
       })
     }
 
