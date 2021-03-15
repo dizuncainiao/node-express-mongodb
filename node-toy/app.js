@@ -10,14 +10,14 @@ app.use(express.urlencoded({extended: true}))
 createCollection()
 
 //设置跨域访问
-app.options("/*", function(req, res, next) {
+app.options("/*", function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
     res.sendStatus(200);
 });
 
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     next();
 });
@@ -71,7 +71,7 @@ app.post('/register', async (req, res) => {
     console.log(req.body);
     const {userName} = req.body
     // 查询用户名是否重复
-    const result = await findUser({userName}, false)
+    const result = await findUser({userName})
     if (result.length) {
         return res.json(setResponse(req.body, '用户名重复！', 4000))
     } else {

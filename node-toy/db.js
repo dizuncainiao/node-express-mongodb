@@ -20,7 +20,7 @@ const getQueryTotal = function (whereInfo = {}) {
         });
     })
 }
-const findUser = function (whereInfo = {}, isFuzzy = true) {
+const findUser = function (whereInfo = {}, isFuzzy = false) {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
@@ -84,7 +84,7 @@ module.exports = {
     // 获取查询的总条数
     getQueryTotal,
     queryUserListPage(condition) {
-        return Promise.all([findUser(condition), getQueryTotal(condition)]).then(([records, total]) => {
+        return Promise.all([findUser(condition, true), getQueryTotal(condition)]).then(([records, total]) => {
             return {records, total}
         })
     },
