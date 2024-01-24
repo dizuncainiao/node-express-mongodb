@@ -3,7 +3,7 @@ const url = "mongodb://localhost:27017/";
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    const dbo = db.db("runoob");
+    const dbo = db.db("dizuncainiao");
     const myobj =  [
         { name: '菜鸟工具1', url: 'https://c.runoob.com', type: '1'},
         { name: '菜鸟工具2', url: 'https://c.runoob.com', type: '2'},
